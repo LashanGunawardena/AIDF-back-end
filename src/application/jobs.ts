@@ -1,18 +1,15 @@
 import { Request, Response } from 'express';
 import jobs from '../infrastructure/jobs';
+import Job from '../infrastructure/schemas/job';
 
-export const getAllJobs = (req: Request, res: Response) => {
+export const getAllJobs = async (req: Request, res: Response) => {
+    const jobs = await Job.find();
     return res.status(200).json(jobs);
 }
 
-export const createJob = (req: Request, res: Response) => {
+export const createJob = async (req: Request, res: Response) => {
     const job = req.body;
-
-    if(!(typeof job.title === 'string' && typeof job.description === 'string' && typeof job.location === 'string' && typeof job.company === 'string')) {
-        return res.status(400).send();
-    }
-
-    jobs.push(job);
+    await Job.create(job);
     return res.status(201).send();
 }
 
