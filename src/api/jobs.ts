@@ -4,6 +4,6 @@ import { getAllJobs, createJob, getJobById, updateJob, deleteJob } from "../appl
 const jobsRouter = express.Router();
 
 jobsRouter.route("/").get(getAllJobs).post(createJob);
-jobsRouter.route("/jobs/:_id").get(getJobById).put(updateJob).delete(deleteJob);
+jobsRouter.route("/:_id").get(getJobById).put(updateJob).delete(deleteJob);
 
 export default jobsRouter;

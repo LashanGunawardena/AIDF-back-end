@@ -6,7 +6,13 @@ export const getAllJobs = (req: Request, res: Response) => {
 }
 
 export const createJob = (req: Request, res: Response) => {
-    jobs.push(req.body);
+    const job = req.body;
+
+    if(!(typeof job.title === 'string' && typeof job.description === 'string' && typeof job.location === 'string' && typeof job.company === 'string')) {
+        return res.status(400).send();
+    }
+
+    jobs.push(job);
     return res.status(201).send();
 }
 

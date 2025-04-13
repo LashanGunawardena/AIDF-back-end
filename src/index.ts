@@ -1,9 +1,13 @@
 import express from "express";
-import { Request, Response } from "express";
 import jobsRouter from "./api/jobs";
+import { connectDB } from "./infrastructure/db";
 
 const app = express();
 app.use(express.json());
 
+connectDB();
+
 app.use("/jobs", jobsRouter);
-app.listen(8000, () => console.log("Server is listening on port 8000."));
+
+const PORT = 8000;
+app.listen(PORT, () => console.log(`Server is listening on port ${PORT}.`));
