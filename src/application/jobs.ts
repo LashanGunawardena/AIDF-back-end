@@ -13,22 +13,24 @@ export const createJob = async (req: Request, res: Response) => {
     return res.status(201).send();
 }
 
-export const getJobById = (req: Request, res: Response) => {
-    const job = jobs.find((job) => job._id === Number(req.params._id));
-    return res.status(200).json(job);
+export const getJobById = async (req: Request, res: Response) => {
+    const jobs = Job.findById(req.params._id);
+    return res.status(200).json(jobs);
 }
 
-export const updateJob = (req: Request, res: Response) => {
-    const indexToUpdate = jobs.findIndex((job) => job._id === Number(req.params._id));
-    jobs[indexToUpdate].title = req.body.title;
-    jobs[indexToUpdate].description = req.body.description;
-    jobs[indexToUpdate].location = req.body.location;
-    jobs[indexToUpdate].company = req.body.company;
+export const updateJob = async (req: Request, res: Response) => {
+    const jobToUpdate = Job.findById(req.params._id);
+    if(!jobToUpdate){
+        return res.status(404).send();
+    }
+    await Job.findByIdAndUpdate(req.params._id, {title: req.body.title, description: req.body.description, location: req.body.location, company: req.body.company});
     return res.status(204).send();
 }
 
-export const deleteJob = (req: Request, res: Response) => {
-    const indexRemove = jobs.findIndex((job) => job._id === Number(req.params._id));
-    jobs.splice(indexRemove, 1);
+export const deleteJob = async (req: Request, res: Response) => {
+    const job = await Job.findByIdAndDelete(req.params._id);
+    if (!job) {
+        return res.status(404).send();
+    }
     return res.status(204).send();
 }
